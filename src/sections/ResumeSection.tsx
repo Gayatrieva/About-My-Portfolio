@@ -8,7 +8,7 @@ export default function ResumeSection() {
   const [downloading, setDownloading] = useState(false)
   const [downloaded, setDownloaded] = useState(false)
   const [progress, setProgress] = useState(0)
-  const progressRef = useRef<NodeJS.Timeout | null>(null)
+  const progressRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const handleDownload = () => {
     if (downloading || downloaded) return
