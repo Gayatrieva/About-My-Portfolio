@@ -24,17 +24,29 @@ function randomBetween(a: number, b: number) {
   return a + Math.random() * (b - a)
 }
 
+function spawnEdgePosition(): { x: number; y: number } {
+  // 4 edge zones: left, right, top, bottom — keeps butterflies off the center content
+  const zone = Math.floor(Math.random() * 4)
+  switch (zone) {
+    case 0: return { x: randomBetween(2,  16), y: randomBetween(8,  90) }  // left strip
+    case 1: return { x: randomBetween(84, 97), y: randomBetween(8,  90) }  // right strip
+    case 2: return { x: randomBetween(5,  95), y: randomBetween(5,  14) }  // top strip
+    default:return { x: randomBetween(5,  95), y: randomBetween(82, 94) }  // bottom strip
+  }
+}
+
 function makeButterfly(id: number): ButterflyState {
   const color = COLORS[Math.floor(Math.random() * COLORS.length)]
+  const { x, y } = spawnEdgePosition()
   return {
     id,
-    x: randomBetween(5, 90),
-    y: randomBetween(10, 80),
+    x,
+    y,
     color: color.hex,
     flapDur: `${randomBetween(0.25, 0.5).toFixed(2)}s`,
     floatDur: `${randomBetween(2.5, 4.5).toFixed(1)}s`,
-    vx: randomBetween(-0.6, 0.6),
-    vy: randomBetween(-0.4, 0.4),
+    vx: randomBetween(-0.7, 0.7),
+    vy: randomBetween(-0.5, 0.5),
     caught: false,
   }
 }

@@ -140,15 +140,30 @@ function ButterflyItem({
       // Gentle random direction shifts
       if (Math.random() < 0.006) vx += (Math.random() - 0.5) * 0.8
       if (Math.random() < 0.006) vy += (Math.random() - 0.5) * 0.5
+
+      // ── Content-zone repulsion ──
+      // Soft push when butterfly drifts into the center content area
+      const cx = 50, cy = 50         // center of viewport
+      const halfW = 32, halfH = 30   // half-size of the "keep out" zone
+      const inX = Math.abs(x - cx) < halfW
+      const inY = Math.abs(y - cy) < halfH
+      if (inX && inY) {
+        // Push away from center proportional to how deep inside the zone
+        const pushX = (x - cx) / halfW
+        const pushY = (y - cy) / halfH
+        vx += pushX * 0.04
+        vy += pushY * 0.04
+      }
+
       // Speed cap
       const speed = Math.sqrt(vx * vx + vy * vy)
-      if (speed > 1.2) { vx = (vx / speed) * 1.2; vy = (vy / speed) * 1.2 }
+      if (speed > 1.3) { vx = (vx / speed) * 1.3; vy = (vy / speed) * 1.3 }
 
       x += vx * dt * 22
       y += vy * dt * 22
 
-      if (x < 3  || x > 95) { vx = -vx; x = Math.max(3, Math.min(95, x)) }
-      if (y < 5  || y > 88) { vy = -vy; y = Math.max(5, Math.min(88, y)) }
+      if (x < 2  || x > 97) { vx = -vx; x = Math.max(2, Math.min(97, x)) }
+      if (y < 4  || y > 93) { vy = -vy; y = Math.max(4, Math.min(93, y)) }
 
       posRef.current = { x, y }
       velRef.current = { vx, vy }
